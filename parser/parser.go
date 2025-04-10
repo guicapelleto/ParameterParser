@@ -2,6 +2,7 @@ package parser
 
 import (
 	"paramparser/custom"
+	"strconv"
 	"strings"
 )
 
@@ -53,13 +54,16 @@ func bodySplitter(form, filtro, filtro_final, campo_divisor string) (results []s
 }
 
 func AttributesParser(recursive bool) {
+	totalPage := 1
 	custom.Aviso("Coletando informações...")
 	HttpParser(MainUrl)
 	if recursive {
 		custom.Aviso("Modo recursivo ativo, pode levar mais tempo que o normal\n\n")
 		for _, url := range Urls {
 			if !custom.SliceStrContains(BodyLogs, url) {
-				custom.PrintRecursive(url, custom.RandomColorPicker())
+				totalPage++
+				txt := "Total de páginas verificadas: " + strconv.Itoa(totalPage)
+				custom.PrintRecursive(txt, custom.RandomColorPicker())
 				HttpParser(url)
 			}
 		}
